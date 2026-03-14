@@ -1,24 +1,41 @@
-# Proyecto Franquismo - Analisis Modular
+# Proyecto Franquismo - Replication Package
 
-Este proyecto replica el flujo de los scripts originales en una estructura modular similar a `ropke_index`. Incluye dos piezas principales:
+Este repositorio reproduce los resultados econometricos del manuscrito y su apendice mediante un unico pipeline de control sintetico. La version actual del proyecto esta pensada como paquete de replicacion para journal: genera solo las tablas y figuras finales citadas en el paper y el appendix.
 
-1) Crecimiento y regimenes historicos (Maddison Project).  
-2) Control sintetico para el "milagro economico" espanol (PWT 11.0, donantes Europa+Americas).
+## Inicio rapido
+```r
+install.packages("renv")  # solo si renv no esta instalado
+renv::restore()
+source("main.R")
+```
+
+O desde terminal:
+```powershell
+Rscript main.R
+```
+
+En el primer arranque hace falta conexion a internet: si `data/raw/` no contiene los insumos crudos fijados, `main.R` los descarga automaticamente y actualiza `data/raw/checksums.txt`.
 
 ## Estructura
 ```
 R/
   config/         # Constantes, paquetes y parametros
-  data/           # Descarga y preparacion de datos
-  analysis/       # Orquestadores de cada estudio
+  data/           # Carga y preparacion de datos
+  analysis/       # Pipeline principal y exports finales del journal
   utils/          # Utilidades generales
   visualization/  # Funciones de graficos
-data/
-  raw/ processed/ # Insumos/derivados locales
+scripts/
+  fetch_data.R    # Descarga insumos y actualiza checksums
 output/
   sessions/<timestamp>/
-    plots/        # PNG generados
-    tables/       # CSV (series y tablas del control sintetico)
+    plots/
+      main/       # Figuras del manuscrito principal
+      appendix/   # Figuras del apendice
+    tables/
+      main/       # Tablas del manuscrito principal
+      appendix/   # Tablas del apendice
+    run_config.yml
+    session_info.txt
 main.R            # Punto de entrada
 ```
 
@@ -28,13 +45,13 @@ main.R            # Punto de entrada
 - Paquetes listados en `R/config/packages.R` (se cargan via `load_required_packages()`).
 
 ## Datos y reproducibilidad
-- No hay descargas automaticas en el pipeline. Los insumos deben existir en `data/raw/` y con hash validado.
+- `main.R` arranca de forma autosuficiente: si faltan los insumos crudos o el checksum no es valido, descarga automaticamente las versiones fijadas y reescribe `data/raw/checksums.txt`.
+- El repositorio no versiona binarios crudos ni outputs generados: los datos se recuperan automaticamente desde sus fuentes fijadas y los resultados se regeneran ejecutando `main.R`.
 - Archivos requeridos:
-  - `data/raw/pwt110.xlsx` (PWT 11.0, GGDC, hoja "Data"), clave de checksum `pwt110`.
+  - `data/raw/pwt110.xlsx` (PWT 11.0, hoja `Data`), clave de checksum `pwt110`.
   - `data/raw/maddison_mpd2023.dta` (Maddison Project Database 2023), clave de checksum `maddison_mpd2023`.
-- Cada archivo debe tener su md5 en `data/raw/checksums.txt`, con formato `<key> <md5sum>`. El pipeline falla si falta el archivo, si no hay hash o si el hash no coincide.
-- Para obtener los datos una vez y generar hashes, usa `Rscript scripts/fetch_data.R` (usa las URLs fijas declaradas en `R/config/constants.R`). No se ejecuta dentro de `main.R`.
-- Si actualizas la version de un insumo, reemplaza el archivo y su md5 en `data/raw/checksums.txt` y documenta la fuente/fecha.
+- Cada archivo debe tener su md5 en `data/raw/checksums.txt`, con formato `<key> <md5sum>`.
+- Si quieres forzar una descarga limpia de los insumos, usa `Rscript scripts/fetch_data.R`.
 
 ## Como ejecutar
 ```r
@@ -43,11 +60,20 @@ source("main.R")       # desde R/RStudio
 # o
 Rscript main.R         # desde terminal
 ```
-Los resultados se guardan en `output/sessions/<timestamp>/plots` y `.../tables`, y la informacion de la sesion (paquetes/versiones) en `output/sessions/<timestamp>/session_info.txt`.
+
+Tras `renv::restore()`, no hace falta preparar manualmente `data/raw/`: el propio pipeline lo bootstrappea si es necesario.
+
+Cada corrida crea una sesion nueva en `output/sessions/<timestamp>/`. La salida final queda reducida a cuatro carpetas: `plots/main`, `plots/appendix`, `tables/main` y `tables/appendix`, mas `run_config.yml` y `session_info.txt`.
+
+## Que genera
+- `plots/main`: figuras del manuscrito principal.
+- `plots/appendix`: figuras del apendice.
+- `tables/main`: tablas del manuscrito principal.
+- `tables/appendix`: tablas del apendice.
+- `run_config.yml` y `session_info.txt`: metadatos de reproducibilidad de cada sesion.
 
 ## Que hace cada modulo
-- `R/analysis/growth_regimes.R`: lee Maddison local, prepara panel de Europa Occidental, calcula crecimiento (media movil de 10 anos sin look-ahead) y un suavizado LOESS unilateral para Espana, anade regimenes historicos y genera las figuras 1-2 + una Figura 1b (LOESS).
-- `R/analysis/synthetic_control.R`: usa PWT 11.0 desde XLSX local (hoja "Data"), arma panel restringido a Europa+Americas, ejecuta MSCMT (control sintetico y placebo), exporta tabla de predictores y genera figuras 3-6; usa ventana pretratamiento 1950-1959, calcula el promedio "Average" con `na.rm=TRUE`, filtra donantes por cobertura pre (1950-1959) y post (1960-1975) antes de estimar, recalcula el promedio sobre el pool limpio y guarda trayectorias placebo, cuantiles (bandas), ratios MSPE, p-values, cobertura anual/pre/post (NAs por variable), pesos de donantes, donantes incluidos y el objeto RDS de los placebos.
+- `R/analysis/synthetic_control.R`: prepara el panel, ejecuta MSCMT, corre placebos, filtros de ajuste, compuerta de estabilidad y especificaciones de robustez necesarias para el paper.
+- `R/analysis/journal_exports.R`: toma los objetos estimados y exporta solo las figuras y tablas canonicamente usadas en el manuscrito y el apendice; al final elimina los arboles de trabajo de `plots/` y `tables/` para dejar la sesion limpia.
 
-## Scripts originales
-Se conservan `Program Statistics Spanish Economic Miracle.R` y `Program Statistics Spanish Economi Miracle2 (Synth Control).R` como referencia; su logica ahora esta en los modulos descritos arriba.
+La version reproducible y entregable del proyecto es `main.R`.

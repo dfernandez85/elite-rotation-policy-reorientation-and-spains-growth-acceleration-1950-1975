@@ -5,10 +5,11 @@ source("R/utils/helpers.R")
 source("R/data/downloaders.R")
 source("R/data/processors.R")
 source("R/visualization/plots.R")
-source("R/analysis/growth_regimes.R")
+source("R/analysis/journal_exports.R")
 source("R/analysis/synthetic_control.R")
 
 load_required_packages()
+ensure_raw_data()
 
 ensure_dir(OUTPUT_SESSIONS)
 
@@ -21,7 +22,6 @@ writeLines(capture.output(utils::sessionInfo()), session_info_path)
 
 cat(sprintf("Starting session at: %s\n", session_dir))
 
-growth_outputs <- analyze_growth_regimes(session_dir)
 
 synthetic_outputs <- run_synthetic_control(session_dir)
 
