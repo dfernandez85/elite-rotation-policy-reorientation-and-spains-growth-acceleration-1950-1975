@@ -1,33 +1,33 @@
-# Estructura del proyecto
+# Project Structure
 
-```
+```text
 Franquismo/
-  main.R                         # Punto de entrada del replication package
-  README.md                      # Instrucciones y vision general
-  PROJECT_STRUCTURE.md           # Este documento
+  main.R                         # Entry point for the replication package
+  README.md                      # Repository overview and execution instructions
+  PROJECT_STRUCTURE.md           # This document
   scripts/
-    fetch_data.R                 # Fuerza una descarga limpia de PWT/Maddison y reescribe checksums
+    fetch_data.R                 # Forces a clean download of pinned PWT and Maddison inputs
   R/
     config/
-      constants.R                # Rutas base de output y claves de checksum
-      packages.R                 # Paquetes requeridos y loader
-      settings.R                 # Paises, ventanas y parametros del pipeline
+      constants.R                # Output paths and checksum keys
+      packages.R                 # Required packages and loader
+      settings.R                 # Countries, windows, and pipeline parameters
     data/
-      downloaders.R              # Bootstrap de datos fijados, validacion de hash y carga local
-      processors.R               # Transformaciones y paneles listos para estimar
+      downloaders.R              # Pinned data bootstrap, checksum validation, and local loading
+      processors.R               # Data transformations and estimation-ready panels
     analysis/
-      synthetic_control.R        # Pipeline de estimacion
-      journal_exports.R          # Export de tablas/figuras finales del paper
+      synthetic_control.R        # Estimation pipeline
+      journal_exports.R          # Export of final manuscript and appendix outputs
     utils/
-      helpers.R                  # Utilidades generales
+      helpers.R                  # General-purpose helper functions
     visualization/
-      plots.R                    # Funciones de graficos del control sintetico
+      plots.R                    # Synthetic-control plotting functions
   data/
     raw/
-      checksums.txt              # md5 exigido para cada insumo crudo
-      maddison_mpd2023.dta       # Maddison Project Database 2023 (no se versiona en git)
-      pwt110.xlsx                # Penn World Table 11.0 (no se versiona en git)
-    processed/                   # Derivados intermedios (reservado)
+      checksums.txt              # Required md5 checksum registry for raw inputs
+      maddison_mpd2023.dta       # Maddison Project Database 2023 (not versioned in git)
+      pwt110.xlsx                # Penn World Table 11.0 (not versioned in git)
+    processed/                   # Reserved for derived intermediates
   output/
     sessions/
       <timestamp>/
@@ -43,8 +43,8 @@ Franquismo/
   renv.lock
 ```
 
-## Flujo resumido
-1. `main.R` carga config y paquetes; si faltan los insumos crudos o sus checksums, los descarga automaticamente.
-2. `R/analysis/synthetic_control.R` estima las especificaciones necesarias del manuscrito y del apendice.
-3. `R/analysis/journal_exports.R` exporta unicamente las figuras y tablas finales y limpia los arboles intermedios de `plots/` y `tables/`.
-4. La sesion deja `session_info.txt` y `run_config.yml` como metadatos de reproducibilidad.
+## Execution flow
+1. `main.R` loads configuration and packages; if raw inputs or checksum files are missing, it downloads the pinned sources automatically.
+2. `R/analysis/synthetic_control.R` estimates the specifications required for the manuscript and the appendix.
+3. `R/analysis/journal_exports.R` exports only the final figures and tables and removes intermediate plot and table trees.
+4. Each run stores `session_info.txt` and `run_config.yml` as session-level reproducibility metadata.
