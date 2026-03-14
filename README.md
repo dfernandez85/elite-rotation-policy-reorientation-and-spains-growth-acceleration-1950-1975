@@ -52,6 +52,7 @@ main.R            # Punto de entrada
   - `data/raw/maddison_mpd2023.dta` (Maddison Project Database 2023), clave de checksum `maddison_mpd2023`.
 - Cada archivo debe tener su md5 en `data/raw/checksums.txt`, con formato `<key> <md5sum>`.
 - Si quieres forzar una descarga limpia de los insumos, usa `Rscript scripts/fetch_data.R`.
+- El repositorio incluye un workflow de GitHub Actions en `/.github/workflows/reproducibility-check.yml` que verifica en Windows un `renv::restore()` limpio y la ejecucion completa de `main.R`, y sube la sesion final como artefacto.
 
 ## Como ejecutar
 ```r
