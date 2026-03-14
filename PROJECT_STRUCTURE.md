@@ -43,7 +43,7 @@ repository-root/
 ```
 
 ## Execution flow
-1. `main.R` loads configuration and packages; if raw inputs or checksum files are missing, it downloads the pinned sources automatically.
+1. `main.R` loads configuration and packages; if the pinned raw input is missing, it downloads it automatically and validates it against the versioned checksum registry.
 2. `R/analysis/synthetic_control.R` estimates the specifications required for the manuscript and the appendix.
 3. `R/analysis/journal_exports.R` exports only the final figures and tables and removes intermediate plot and table trees.
 4. Each run stores `session_info.txt` and `run_config.yml` as session-level reproducibility metadata.

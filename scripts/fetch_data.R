@@ -1,4 +1,5 @@
-# Utility script to download the pinned PWT input and write its md5 checksum.
+# Utility script to download the pinned PWT input and validate it against the
+# versioned checksum registry.
 # Usage: Rscript scripts/fetch_data.R
 
 source("R/config/constants.R")
