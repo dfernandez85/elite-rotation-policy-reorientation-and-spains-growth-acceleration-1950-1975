@@ -6,7 +6,7 @@ Franquismo/
   README.md                      # Repository overview and execution instructions
   PROJECT_STRUCTURE.md           # This document
   scripts/
-    fetch_data.R                 # Forces a clean download of pinned PWT and Maddison inputs
+    fetch_data.R                 # Forces a clean download of the pinned PWT input
   R/
     config/
       constants.R                # Output paths and checksum keys
@@ -25,7 +25,6 @@ Franquismo/
   data/
     raw/
       checksums.txt              # Required md5 checksum registry for raw inputs
-      maddison_mpd2023.dta       # Maddison Project Database 2023 (not versioned in git)
       pwt110.xlsx                # Penn World Table 11.0 (not versioned in git)
     processed/                   # Reserved for derived intermediates
   output/

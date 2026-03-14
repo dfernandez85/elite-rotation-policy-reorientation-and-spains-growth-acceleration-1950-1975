@@ -1,7 +1,6 @@
 raw_data_targets <- function() {
   list(
-    list(url = PWT11_URL, dest = PWT11_LOCAL, key = PWT11_CHECKSUM_KEY),
-    list(url = MADDISON_URL, dest = MADDISON_LOCAL, key = MADDISON_CHECKSUM_KEY)
+    list(url = PWT11_URL, dest = PWT11_LOCAL, key = PWT11_CHECKSUM_KEY)
   )
 }
 
@@ -72,12 +71,6 @@ ensure_raw_data <- function(targets = raw_data_targets(), checksums_path = CHECK
   }
 
   invisible(TRUE)
-}
-
-load_maddison_data <- function(local_path = MADDISON_LOCAL,
-                               checksum_key = MADDISON_CHECKSUM_KEY) {
-  validate_file_hash(local_path, checksum_key)
-  rio::import(local_path)
 }
 
 load_pwt_data <- function(local_path = PWT11_LOCAL,

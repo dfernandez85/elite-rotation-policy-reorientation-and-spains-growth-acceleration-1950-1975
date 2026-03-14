@@ -1,4 +1,4 @@
-# Utility script to download pinned data files and write their md5 checksums.
+# Utility script to download the pinned PWT input and write its md5 checksum.
 # Usage: Rscript scripts/fetch_data.R
 
 source("R/config/constants.R")

@@ -734,8 +734,7 @@ run_synthetic_control <- function(session_dir) {
     outcomes = vapply(outcomes, `[[`, character(1), "id"),
     specs = vapply(specs, `[[`, character(1), "name"),
     data_files = list(
-      list(key = "pwt11", path = PWT11_LOCAL, expected_md5 = checksum_lookup(PWT11_CHECKSUM_KEY)),
-      list(key = "maddison_mpd2023", path = MADDISON_LOCAL, expected_md5 = checksum_lookup(MADDISON_CHECKSUM_KEY))
+      list(key = "pwt11", path = PWT11_LOCAL, expected_md5 = checksum_lookup(PWT11_CHECKSUM_KEY))
     )
   )
   write_run_metadata(session_dir, metadata)
