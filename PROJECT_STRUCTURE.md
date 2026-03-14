@@ -1,7 +1,7 @@
 # Project Structure
 
 ```text
-Franquismo/
+repository-root/
   main.R                         # Entry point for the replication package
   README.md                      # Repository overview and execution instructions
   PROJECT_STRUCTURE.md           # This document
