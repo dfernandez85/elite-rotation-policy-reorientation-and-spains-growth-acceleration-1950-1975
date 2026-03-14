@@ -11,8 +11,6 @@ required_packages <- c(
   "scales",
   "forcats",
   "textclean",
-  "pwt10",
-  "pwt9",
   "readxl",
   "gridExtra",
   "Synth",

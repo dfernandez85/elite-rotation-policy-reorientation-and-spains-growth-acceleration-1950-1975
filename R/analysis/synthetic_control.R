@@ -716,7 +716,7 @@ run_synthetic_control <- function(session_dir) {
     pre_mspe_max_increase_pct = if (exists("stability_pre_mspe_max_increase_pct", inherits = TRUE)) as.numeric(stability_pre_mspe_max_increase_pct) else 30,
     top_k_candidates = if (exists("stability_top_k_candidates", inherits = TRUE)) as.integer(stability_top_k_candidates) else 3L
   )
-  checksum_info <- tryCatch(read_checksum_file(), error = function(e) e)
+  checksum_info <- tryCatch(read_checksums(), error = function(e) e)
   checksum_lookup <- function(key) {
     if (inherits(checksum_info, "error") || is.null(checksum_info[[key]])) return(NA_character_)
     checksum_info[[key]]
@@ -734,7 +734,7 @@ run_synthetic_control <- function(session_dir) {
     outcomes = vapply(outcomes, `[[`, character(1), "id"),
     specs = vapply(specs, `[[`, character(1), "name"),
     data_files = list(
-      list(key = "pwt11", path = PWT11_LOCAL, expected_md5 = checksum_lookup(PWT11_CHECKSUM_KEY))
+      list(key = PWT11_CHECKSUM_KEY, path = PWT11_LOCAL, expected_md5 = checksum_lookup(PWT11_CHECKSUM_KEY))
     )
   )
   write_run_metadata(session_dir, metadata)
