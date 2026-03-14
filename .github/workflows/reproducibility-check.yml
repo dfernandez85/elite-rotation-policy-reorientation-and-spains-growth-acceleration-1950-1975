@@ -31,8 +31,6 @@ jobs:
 
       - name: Run full journal pipeline
         shell: pwsh
-        env:
-          RENV_CONFIG_AUTOLOADER_ENABLED: FALSE
         run: |
           Rscript main.R
 
