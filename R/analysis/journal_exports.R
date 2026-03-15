@@ -553,7 +553,7 @@ export_journal_outputs <- function(session_dir,
       `RMSPE ratio` = c(fmt_num(treat_1970$summary$rmspe_ratio, 2), fmt_num(treat_1980$summary$rmspe_ratio, 2)),
       `RMSPE p-value` = c(fmt_p(treat_1970$summary$rmspe_p_value, 3), fmt_p(treat_1980$summary$rmspe_p_value, 3)),
       `Top donor (weight)` = c(fmt_top_donor(treat_1970$summary$top_donor, treat_1970$summary$top_weight, 3), fmt_top_donor(treat_1980$summary$top_donor, treat_1980$summary$top_weight, 3)),
-      `Pos. donors / placebos` = c(sprintf("%s / %s", fmt_int(treat_1970$summary$positive_donors), fmt_int(treat_1970$summary$retained_placebos)), sprintf("%s / %s", fmt_int(treat_1980$summary$positive_donors), fmt_int(treat_1980$summary$retained_placebos)))
+      `Positive donors` = c(fmt_int(treat_1970$summary$positive_donors), fmt_int(treat_1980$summary$positive_donors))
     )
     write_journal_table(appendix_d1, file.path(tables_appendix_dir, "Table_D1_pseudo_treatment_timing_summary.csv"))
   }
@@ -567,7 +567,7 @@ export_journal_outputs <- function(session_dir,
       `Gap p-value` = c(fmt_p(baseline_gdp$summary$gap_p_value, 3), fmt_p(drop_nicaragua$summary$gap_p_value, 3), fmt_p(drop_austria$summary$gap_p_value, 3), fmt_p(drop_mexico$summary$gap_p_value, 3)),
       `RMSPE ratio` = c(fmt_num(baseline_gdp$summary$rmspe_ratio, 2), fmt_num(drop_nicaragua$summary$rmspe_ratio, 2), fmt_num(drop_austria$summary$rmspe_ratio, 2), fmt_num(drop_mexico$summary$rmspe_ratio, 2)),
       `RMSPE p-value` = c(fmt_p(baseline_gdp$summary$rmspe_p_value, 3), fmt_p(drop_nicaragua$summary$rmspe_p_value, 3), fmt_p(drop_austria$summary$rmspe_p_value, 3), fmt_p(drop_mexico$summary$rmspe_p_value, 3)),
-      `Pos. donors / placebos` = c(sprintf("%s / %s", fmt_int(baseline_gdp$summary$positive_donors), fmt_int(baseline_gdp$summary$retained_placebos)), sprintf("%s / %s", fmt_int(drop_nicaragua$summary$positive_donors), fmt_int(drop_nicaragua$summary$retained_placebos)), sprintf("%s / %s", fmt_int(drop_austria$summary$positive_donors), fmt_int(drop_austria$summary$retained_placebos)), sprintf("%s / %s", fmt_int(drop_mexico$summary$positive_donors), fmt_int(drop_mexico$summary$retained_placebos)))
+      `Positive donors` = c(fmt_int(baseline_gdp$summary$positive_donors), fmt_int(drop_nicaragua$summary$positive_donors), fmt_int(drop_austria$summary$positive_donors), fmt_int(drop_mexico$summary$positive_donors))
     )
     write_journal_table(appendix_a1, file.path(tables_appendix_dir, "Table_A1_gdp_per_capita_robustness_summary.csv"))
 
@@ -594,7 +594,7 @@ export_journal_outputs <- function(session_dir,
       `RMSPE ratio` = fmt_num(capital_summary$summary$rmspe_ratio, 2),
       `RMSPE p-value` = fmt_p(capital_summary$summary$rmspe_p_value, 3),
       `Top donor (weight)` = fmt_top_donor(capital_summary$summary$top_donor, capital_summary$summary$top_weight, 3),
-      `Pos. donors / placebos` = sprintf("%s / %s", fmt_int(capital_summary$summary$positive_donors), fmt_int(capital_summary$summary$retained_placebos))
+      `Positive donors` = fmt_int(capital_summary$summary$positive_donors)
     )
     write_journal_table(appendix_b1, file.path(tables_appendix_dir, "Table_B1_real_capital_stock_per_capita_summary_statistics.csv"))
     write_journal_table(capital_summary$pool_obj$donor_weights |> dplyr::mutate(Weight = round(Weight, 3)), file.path(tables_appendix_dir, "Table_B2_real_capital_stock_per_capita_donor_weights.csv"))
@@ -608,7 +608,7 @@ export_journal_outputs <- function(session_dir,
       `RMSPE ratio` = fmt_num(human_summary$summary$rmspe_ratio, 2),
       `RMSPE p-value` = fmt_p(human_summary$summary$rmspe_p_value, 3),
       `Top donor (weight)` = fmt_top_donor(human_summary$summary$top_donor, human_summary$summary$top_weight, 3),
-      `Pos. donors / placebos` = sprintf("%s / %s", fmt_int(human_summary$summary$positive_donors), fmt_int(human_summary$summary$retained_placebos))
+      `Positive donors` = fmt_int(human_summary$summary$positive_donors)
     )
     write_journal_table(appendix_c1, file.path(tables_appendix_dir, "Table_C1_human_capital_summary_statistics.csv"))
     write_journal_table(human_summary$pool_obj$donor_weights |> dplyr::mutate(Weight = round(Weight, 3)), file.path(tables_appendix_dir, "Table_C2_human_capital_donor_weights.csv"))
